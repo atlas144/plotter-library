@@ -1,0 +1,19 @@
+###########################################
+# Syntax Coloring Map For Stepper Motor library
+###########################################
+
+###########################################
+# Datatypes (KEYWORD1)
+###########################################
+
+Plotter	KEYWORD1
+
+###########################################
+# Methods and Functions (KEYWORD2)
+###########################################
+
+setCharSize KEYWORD2
+pageStart   KEYWORD2
+newLine KEYWORD2
+testOrientation KEYWORD2
+write   KEYWORD2
