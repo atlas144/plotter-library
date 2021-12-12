@@ -1,4 +1,4 @@
-#include "plotter.h"
+#include "Plotter.h"
 
 void Plotter::penDown() {
   servo->write(80);
@@ -787,7 +787,7 @@ void Plotter::writeS() {
     moveUpLeft();
   }
   for (uint16_t i = 0; i < charSize / 5 * 2; i++) {
-    moveRight();
+    moveLeft();
   }
   for (uint16_t i = 0; i < charSize / 5; i++) {
     moveDownLeft();
@@ -970,6 +970,7 @@ void Plotter::writeX() {
   for (uint16_t i = 0; i < charSize / 5 * 4; i++) {
     moveLeft();
   }
+  penDown();
   for (uint16_t i = 0; i < charSize / 10; i++) {
     moveUp();
   }
@@ -1042,7 +1043,7 @@ void Plotter::writeZ() {
     moveDown();
   }
   for (uint16_t i = 0; i < charSize / 5 * 4; i++) {
-    moveLeft();
+    moveRight();
   }
   penUp();
   for (uint16_t i = 0; i < charSize; i++) {
@@ -1134,6 +1135,19 @@ void Plotter::writeDash() {
   currentChar++;
 }
 
+void Plotter::writeSlash() {
+  penDown();
+  for (uint16_t i = 0; i < charSize; i++) {
+    moveDownRight();
+  }
+  penUp();
+  for (uint16_t i = 0; i < charSize; i++) {
+    moveUp();
+  }
+
+  currentChar++;
+}
+
 void Plotter::writePlus() {
   penUp();
   for (uint16_t i = 0; i < charSize / 2; i++) {
@@ -1168,9 +1182,13 @@ void Plotter::writePlus() {
   currentChar++;
 }
 
-Plotter::Plotter(StepperMotor* motorX, StepperMotor* motorY, Servo* servo, uint16_t charSize) : motorX(motorX), motorY(motorY), servo(servo), charSize(charSize), currentLine(0), currentChar(0) {
+Plotter::Plotter(StepperMotor* motorX, StepperMotor* motorY, Servo* servo, uint16_t charSize, bool loadPositionOnStart) : motorX(motorX), motorY(motorY), servo(servo), charSize(charSize) {
   maxLine = 120 / charSize;
   maxChar = 420 / charSize;
+
+  if (loadPositionOnStart) {
+    loadPosition();
+  }
 }
 
 void Plotter::setCharSize(uint16_t newSize) {
@@ -1203,13 +1221,14 @@ void Plotter::newLine() {
   currentChar = 0;
 }
 
-void Plotter::testOrientation() {
+void Plotter::testPlotter() {
   penUp();
   delay(1000);
   penDown();
   delay(1000);
   penUp();
   delay(1000);
+  penDown();
   for (uint8_t i = 0; i < 100; i++) {
     moveUp();
   }
@@ -1226,10 +1245,12 @@ void Plotter::testOrientation() {
     moveLeft();
   }
   delay(500);
+  penUp();
   for (uint8_t i = 0; i < 50; i++) {
     moveUp();
   }
   delay(500);
+  penDown();
   for (uint8_t i = 0; i < 50; i++) {
     moveUpRight();
   }
@@ -1245,6 +1266,7 @@ void Plotter::testOrientation() {
   for (uint8_t i = 0; i < 50; i++) {
     moveUpLeft();
   }
+  penUp();
   delay(500);
   for (uint8_t i = 0; i < 50; i++) {
     moveDown();
@@ -1394,19 +1416,19 @@ void Plotter::write(String* text) {
           break;
         }
         case '.': {
-          writeSpace();
+          writeDot();
           break;
         }
         case '-': {
-          writeSpace();
+          writeDash();
           break;
         }
         case '/': {
-          writeSpace();
+          writeSlash();
           break;
         }
         case '+': {
-          writeSpace();
+          writePlus();
           break;
         }
         default: {

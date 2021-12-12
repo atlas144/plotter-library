@@ -220,6 +220,10 @@ A simple library that turns an Arduino and a couple of motors into a 2D plotter.
 
 - writes dash sign
 
+##### *void* writeSlash
+
+- writes slash sign
+
 ##### *void* writePlus
 
 - writes plus sign
@@ -234,6 +238,7 @@ A simple library that turns an Arduino and a couple of motors into a 2D plotter.
   - *StepperMotor\** motorY - see private attributes
   - *Servo\** servo - see private attributes
   - *uint16_t* charSize - see private attributes
+  - *bool* loadPositionOnStart - indicates, if the position of the EE should be loaded from EEPROM
 
 ##### *void* setCharSize
 
@@ -249,7 +254,7 @@ A simple library that turns an Arduino and a couple of motors into a 2D plotter.
 
 - moves EE to the start of the next line
 
-##### *void* testOrientation
+##### *void* testPlotter
 
 - draws test picture
 

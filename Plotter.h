@@ -65,14 +65,15 @@ class Plotter {
     void writeSpace();
     void writeDot();
     void writeDash();
+    void writeSlash();
     void writePlus();
 
   public:
-    Plotter(StepperMotor* motorX, StepperMotor* motorY, Servo* servo, uint16_t charSize);
+    Plotter(StepperMotor* motorX, StepperMotor* motorY, Servo* servo, uint16_t charSize, bool loadPositionOnStart = false);
     void setCharSize(uint16_t newSize);
     void pageStart();
     void newLine();
-    void testOrientation();
+    void testPlotter();
     void write(String* text);
 };
 
